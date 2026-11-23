@@ -1,0 +1,3 @@
+import {z} from 'zod';
+const schema=z.object({PORT:z.coerce.number().int().min(1).max(65535).default(3000),HOST:z.string().default('0.0.0.0'),LOG_LEVEL:z.enum(['fatal','error','warn','info','debug','trace']).default('info'),ALLOWED_ORIGINS:z.string().default('http://localhost:5173,http://127.0.0.1:5173'),MAX_ROOMS:z.coerce.number().int().positive().default(50),MAX_PLAYERS_PER_ROOM:z.coerce.number().int().positive().max(32).default(8),MAX_CONNECTIONS_PER_IP:z.coerce.number().int().positive().default(10),LOG_DIR:z.string().default('./logs')});
+export const config=schema.parse(process.env);export const allowedOrigins=new Set(config.ALLOWED_ORIGINS.split(',').map(x=>x.trim()).filter(Boolean));

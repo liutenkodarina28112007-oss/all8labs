@@ -1,0 +1,3 @@
+import WebSocket from 'ws';
+const counts=[8,32,64,128];const url=process.env.WS_URL||'ws://localhost:3000/ws';
+for(const count of counts){const clients=[];let opened=0;const start=Date.now();for(let i=0;i<count;i++){const ws=new WebSocket(url);clients.push(ws);ws.on('open',()=>{opened++;ws.send(JSON.stringify({type:'join',v:1,room:'load-test',name:`bot-${i}`}));});ws.on('message',()=>{});}await new Promise(r=>setTimeout(r,5000));for(const ws of clients)if(ws.readyState===WebSocket.OPEN)ws.close();await new Promise(r=>setTimeout(r,250));console.log(JSON.stringify({clients:count,opened,durationMs:Date.now()-start}));}

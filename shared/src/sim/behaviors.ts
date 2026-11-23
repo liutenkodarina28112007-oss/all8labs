@@ -1,0 +1,3 @@
+import type {EntityState} from './world.js';
+export type HomingBehavior={target:()=>EntityState|undefined;turnRate:number};
+export function attachHoming<T extends {state:EntityState}>(entity:T,behavior:HomingBehavior){return{...entity,homing:behavior,update(dt:number){const target=behavior.target();if(!target)return;const desired=Math.atan2(target.y-entity.state.y,target.x-entity.state.x);let delta=(desired-entity.state.angle+Math.PI*3)%(Math.PI*2)-Math.PI;delta=Math.max(-behavior.turnRate*dt,Math.min(behavior.turnRate*dt,delta));entity.state.angle+=delta;const speed=Math.hypot(entity.state.vx,entity.state.vy)||1;entity.state.vx=Math.cos(entity.state.angle)*speed;entity.state.vy=Math.sin(entity.state.angle)*speed;}}}

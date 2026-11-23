@@ -1,0 +1,38 @@
+{
+  "name": "dogfight-multiplayer",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "client",
+    "server",
+    "shared"
+  ],
+  "scripts": {
+    "predev": "npm run build -w shared",
+    "dev": "concurrently -k \"npm:dev:server\" \"npm:dev:client\"",
+    "dev:server": "npm run dev -w server",
+    "dev:client": "npm run dev -w client",
+    "build": "npm run build -w shared && npm run build -w client && npm run build -w server",
+    "start": "npm run start -w server",
+    "test": "vitest run",
+    "e2e": "playwright test",
+    "typecheck": "npm run build -w shared && tsc --noEmit -p server/tsconfig.json && tsc --noEmit -p client/tsconfig.json",
+    "lint": "eslint .",
+    "loadtest": "node scripts/load-test.mjs",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.0",
+    "@types/node": "^22.15.0",
+    "@types/ws": "^8.18.1",
+    "concurrently": "^9.1.2",
+    "eslint": "^9.25.0",
+    "fast-check": "^4.1.1",
+    "prettier": "^3.5.3",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.73.0",
+    "vite": "^6.3.5",
+    "vitest": "^3.1.2"
+  }
+}
